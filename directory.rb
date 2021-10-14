@@ -8,7 +8,7 @@ def input_students
     
     while !name.empty? do
         @students << {name: name, cohort: :november}
-        puts "Now we have #{@students.count} students"
+        puts "Now we have #{@students.count} student#{"s" if @students.count != 1}"
         name = gets.chomp
     end 
     @students
@@ -19,18 +19,45 @@ def print_header
   puts "-------------"
 end 
 
-def print_students_list
-@students.each_with_index do |student, idx|
-    puts "#{idx + 1}: #{student[:name]} (#{student[:cohort]} cohort)"
-end 
+#def print_students_list
+#@students.each_with_index do |student, idx|
+   # puts "#{idx + 1}: #{student[:name]} (#{student[:cohort]} cohort)" 
+#end 
+#end
+
+#----test
+
+def print_students
+  count = 0
+  while count < @students.length
+    puts "#{@students[count][:name]} (#{@students[count][:cohort]} cohort)"
+    count += 1
+  end
 end
 
+#---------
+
+
+
+def students_by_name 
+    puts "enter a letter to search"
+    letter = gets.chomp.upcase
+    @students.each {|student| puts "#{student[:name]} (#{student[:cohort]} cohort)" if student[:name].upcase.start_with?(letter)}
+end 
+
+def students_by_length
+    puts "enter a length"
+    number = gets.chomp.to_i
+    @students.each {|student| puts "#{student[:name]} (#{student[:cohort]} cohort)" if student[:name].length < number}
+end 
 
 def print_menu 
      puts "1. Input the students"
      puts "2. Show the students"
      puts "3. Save the list to students.csv"
      puts "4. Load the list from students.csv"
+     puts "5. Student by first letter"
+     puts "6. Student name by length"
      puts "9. Exit"
 end 
 
@@ -44,6 +71,10 @@ def process(selection)
         save_students
     when "4"
         load_students
+    when "5"
+        students_by_name
+    when "6"
+        students_by_length
     when "9"
       exit
     else
@@ -70,14 +101,15 @@ def load_students
     file.close
 end 
 
+
 def show_students
-    print_header
-    print_students_list
-    print_footer
+    print_header 
+    print_students
+    print_footer 
 end 
 
 def interactive_menu
-    students = []
+    #students = []
     loop do
         print_menu
         process(gets.chomp)
