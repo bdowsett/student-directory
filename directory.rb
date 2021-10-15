@@ -35,7 +35,7 @@ def print_students
   end
 end
 
-#---------
+
 
 
 
@@ -92,7 +92,7 @@ end
 file.close
 end 
 
-def load_students
+def load_students(filename = "students.csv")
     file = File.open("students.csv", "r")
     file.readlines.each do |line| 
         name, cohort = line.chomp.split(",")
@@ -101,6 +101,17 @@ def load_students
     file.close
 end 
 
+def try_load_students
+    filename = ARGV.first 
+    return if filename.nil?
+    if File.exists?(filename)
+        load_students(filename)
+        puts "Loaded #{@students.count} from #{filename}"
+    else
+        puts "Sorry, #{filename} doesn't exist"
+        exit
+    end 
+end 
 
 def show_students
     print_header 
@@ -120,5 +131,5 @@ def print_footer
 puts "Overall, we have #{@students.count} great students"
 end 
 
-
+try_load_students
 interactive_menu
